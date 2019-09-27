@@ -11,13 +11,13 @@ class MainBall {
   display(){
     push()
     noStroke()
-    fill(255)
+    fill(0)
     ellipse(this.x, this.y, this.size, this.size)
     pop()
   }
-  intersect(d){
-    let distance = dist(mouseX, mouseY, d.x, d.y);
-    if(distance < this.r){
+  intersect(x, y){
+    let distance = dist(mouseX, mouseY, x,y);
+    if(distance < this.size){
       return true;
     }
   }
