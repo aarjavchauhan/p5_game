@@ -2,7 +2,7 @@ let leftWallStart = 0
 let rightWallStart = 0
 let start = false
 let end = false
-let dropBallSpeed = 100
+let dropBallSpeed = 2
 let scoreCounter = 0
 let fallingBalls = []
 let wallRetreatSpeed = 10
@@ -10,12 +10,14 @@ let wallRetreatSpeed = 10
 function setup() {
   let mouseColor = color(139,0,0)
   noCursor()
+  noStroke()
   createCanvas(500, 500)
   mainBall = new MainBall()
 }
 
 function draw() {
   background(255);
+  startGameScreen()
   if (start) {
     startGame()
   }
@@ -46,6 +48,8 @@ function wallIntersect(xCoordinate)
 }
 
 function startGame(){
+  background(255);
+
   if(end != true){
     if(frameCount%50 == 0 && leftWallStart != width/2)
     {
@@ -55,7 +59,7 @@ function startGame(){
     mainBall.move()
     mainBall.display()
     if(wallIntersect(mainBall.x))
-    end = true
+      end = true
 
     for (var i = fallingBalls.length-1; i >0  ; i--) {
       fallingBalls[i].move()
@@ -67,7 +71,7 @@ function startGame(){
         leftWallStart -= wallRetreatSpeed;
         rightWallStart -= wallRetreatSpeed;
         fallingBalls.splice(i,1)
-        end = true
+      //  end = true
       }
     }
 
@@ -75,30 +79,34 @@ function startGame(){
     text(mainBall.x + '--' + mainBall.y, mouseX, mouseY);
   }
   else {
-    push()
-    fill(0, 102, 153);
-    text('Game Over!', width/2, height/2);
-    pop()
+    endGameScreen()
   }
-}
-
-function keyPressed() {
-  if (keyCode === 32) {
-    start = true;
-    console.log("Space Pressed")
-  }
-  return false; // prevent default
 }
 
 function makeDrop(){
-  fallingBalls.push(new FallingBall(leftWallStart, rightWallStart))
+  fallingBalls.push(new FallingBall(leftWallStart, rightWallStart, dropBallSpeed))
 }
 
-function endGameCollision(ball)
+function startGameScreen(){
+  push()
+  fill(0, 102, 153);
+  circ = circle(width/2, height/2, 25)
+  mainBall.move()
+  mainBall.display()
+  if(mainBall.intersect(width/2,height/2))
+    start = true
+  pop()
+}
+
+function setStart()
 {
-
+  if(!start)
+    start = true
 }
 
-function endGame(end){
-  return end
+function endGameScreen(){
+  push()
+  fill(0, 102, 153);
+  text('Game Over!', width/2, height/2);
+  pop()
 }

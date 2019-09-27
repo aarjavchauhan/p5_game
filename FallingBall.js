@@ -1,8 +1,8 @@
 class FallingBall {
-  constructor(leftWall, rightWall) {
+  constructor(leftWall, rightWall, dropBallSpeed) {
     this.x = random(leftWall, width-rightWall);
     this.y = 0;
-    this.speed = 5;
+    this.speed = dropBallSpeed;
   }
 
   move() {
