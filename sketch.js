@@ -16,7 +16,7 @@ function setup() {
 }
 
 function draw() {
-  background(255);
+  background(255)
   startGameScreen()
   if (start) {
     startGame()
@@ -48,7 +48,7 @@ function wallIntersect(xCoordinate)
 }
 
 function startGame(){
-  background(255);
+  background(255)
 
   if(end != true){
     if(frameCount%50 == 0 && leftWallStart != width/2)
@@ -61,22 +61,22 @@ function startGame(){
     if(wallIntersect(mainBall.x))
       end = true
 
-    for (var i = fallingBalls.length-1; i >0  ; i--) {
+    for (var i = fallingBalls.length-1 ; i >0  ; i--) {
       fallingBalls[i].move()
       fallingBalls[i].display()
       if(wallIntersect(fallingBalls[i].x)){
         fallingBalls.splice(i,1)
       }
       else if(mainBall.intersect(fallingBalls[i].x,fallingBalls[i].y)){
-        leftWallStart -= wallRetreatSpeed;
-        rightWallStart -= wallRetreatSpeed;
+        leftWallStart -= wallRetreatSpeed
+        rightWallStart -= wallRetreatSpeed
         fallingBalls.splice(i,1)
       //  end = true
       }
     }
 
-    fill(0, 102, 153);
-    text(mainBall.x + '--' + mainBall.y, mouseX, mouseY);
+    fill(0, 102, 153)
+    text(mainBall.x + '--' + mainBall.y, mouseX, mouseY)
   }
   else {
     endGameScreen()
@@ -89,7 +89,7 @@ function makeDrop(){
 
 function startGameScreen(){
   push()
-  fill(0, 102, 153);
+  fill(0, 102, 153)
   circ = circle(width/2, height/2, 25)
   mainBall.move()
   mainBall.display()
@@ -106,7 +106,7 @@ function setStart()
 
 function endGameScreen(){
   push()
-  fill(0, 102, 153);
-  text('Game Over!', width/2, height/2);
+  fill(0, 102, 153)
+  text('Game Over!', width/2, height/2)
   pop()
 }

@@ -1,12 +1,12 @@
 class MainBall {
   constructor() {
-    this.x = mouseX;
-    this.y = mouseY;
-    this.size = 25;
+    this.x = mouseX
+    this.y = mouseY
+    this.size = 25
   }
   move() {
-    this.x = mouseX;
-    this.y = mouseY;
+    this.x = mouseX
+    this.y = mouseY
   }
   display(){
     push()
@@ -16,7 +16,7 @@ class MainBall {
     pop()
   }
   intersect(x, y){
-    let distance = dist(mouseX, mouseY, x,y);
+    let distance = dist(mouseX, mouseY, x,y)
     if(distance < this.size){
       return true;
     }
