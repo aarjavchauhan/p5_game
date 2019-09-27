@@ -50,7 +50,13 @@ function wallIntersect(xCoordinate)
 function startGame(){
   background(255)
 
+
   if(end != true){
+
+    scoreCounter += fallingBalls.length
+    textAlign(CENTER);
+    text(round(scoreCounter/100), width/2, 0.9*height);
+
     if(frameCount%50 == 0 && leftWallStart != width/2)
     {
       makeDrop()
@@ -74,12 +80,9 @@ function startGame(){
       //  end = true
       }
     }
-
-    fill(0, 102, 153)
-    text(mainBall.x + '--' + mainBall.y, mouseX, mouseY)
   }
   else {
-    endGameScreen()
+    endGameScreen(round(scoreCounter/100))
   }
 }
 
@@ -104,9 +107,9 @@ function setStart()
     start = true
 }
 
-function endGameScreen(){
+function endGameScreen(finalScore){
   push()
   fill(0, 102, 153)
-  text('Game Over!', width/2, height/2)
+  text('Game Over! Final Score: '+ finalScore, width/2, height/2)
   pop()
 }
