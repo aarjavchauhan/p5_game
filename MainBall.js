@@ -15,4 +15,10 @@ class MainBall {
     ellipse(this.x, this.y, this.size, this.size)
     pop()
   }
+  intersect(d){
+    let distance = dist(mouseX, mouseY, d.x, d.y);
+    if(distance < this.r){
+      return true;
+    }
+  }
 }

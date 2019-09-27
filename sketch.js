@@ -2,6 +2,7 @@ let leftWallStart = 0
 let rightWallStart = 0
 let start = false
 let dropBallSpeed = 100
+let scoreCounter = 0
 
 let fallingBalls = []
 
@@ -44,14 +45,14 @@ function wallIntersect(xCoordinate)
 }
 
 function startGame(){
-  if(frameCount%50 == 0)
+  if(frameCount%50 == 0 && leftWallStart != width/2)
   {
     makeDrop()
   }
   drawWall()
   ball.move()
   ball.display()
-  //  console.log(fallingBalls.length);
+
   for (var i = fallingBalls.length-1; i >0  ; i--) {
     fallingBalls[i].move()
     fallingBalls[i].display()
