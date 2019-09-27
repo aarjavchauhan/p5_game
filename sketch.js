@@ -3,9 +3,11 @@ let rightWallStart = 0
 let start = false
 let end = false
 let dropBallSpeed = 2
+let dropRate = 50
+let goodBallRate = 3
 let scoreCounter = 0
 let fallingBalls = []
-let wallRetreatSpeed = 10
+let wallRetreatSpeed = 100
 
 function setup() {
   let mouseColor = color(139,0,0)
@@ -57,7 +59,7 @@ function startGame(){
     textAlign(CENTER);
     text(round(scoreCounter/100), width/2, 0.9*height);
 
-    if(frameCount%50 == 0 && leftWallStart != width/2)
+    if(frameCount%dropRate == 0 && leftWallStart != width/2)
     {
       makeDrop()
     }
@@ -73,11 +75,19 @@ function startGame(){
       if(wallIntersect(fallingBalls[i].x)){
         fallingBalls.splice(i,1)
       }
-      else if(mainBall.intersect(fallingBalls[i].x,fallingBalls[i].y)){
-        leftWallStart -= wallRetreatSpeed
-        rightWallStart -= wallRetreatSpeed
+      else if(mainBall.intersect(fallingBalls[i].x,fallingBalls[i].y) && fallingBalls[i].kind == "good"){
+        if(leftWallStart < wallRetreatSpeed){
+          leftWallStart = 0
+          rightWallStart = 0
+        }else {
+          leftWallStart -= wallRetreatSpeed
+          rightWallStart -= wallRetreatSpeed
+        }
         fallingBalls.splice(i,1)
-      //  end = true
+      }
+      else if(mainBall.intersect(fallingBalls[i].x,fallingBalls[i].y) && fallingBalls[i].kind == "bad"){
+        fallingBalls.splice(i,1)
+        end = true
       }
     }
   }
@@ -86,8 +96,18 @@ function startGame(){
   }
 }
 
+function scoringLogic(score){
+  if (true) {
+
+  }
+}
+
 function makeDrop(){
-  fallingBalls.push(new FallingBall(leftWallStart, rightWallStart, dropBallSpeed))
+  var rand = random(0,10)
+  if(rand<goodBallRate)
+    fallingBalls.push(new FallingBall(leftWallStart, rightWallStart, dropBallSpeed, "good"))
+  else
+    fallingBalls.push(new FallingBall(leftWallStart, rightWallStart, dropBallSpeed, "bad"))
 }
 
 function startGameScreen(){
@@ -99,12 +119,6 @@ function startGameScreen(){
   if(mainBall.intersect(width/2,height/2))
     start = true
   pop()
-}
-
-function setStart()
-{
-  if(!start)
-    start = true
 }
 
 function endGameScreen(finalScore){
