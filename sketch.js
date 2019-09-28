@@ -10,6 +10,7 @@ let fallingBalls = []
 let wallRetreatSpeed = 200
 let wallIncreaseSpeed = 0.2
 
+
 function setup() {
   let mouseColor = color(139,0,0)
   noCursor()
@@ -88,6 +89,7 @@ function startGame(){
           rightWallStart -= wallRetreatSpeed
         }
         fallingBalls.splice(i,1)
+        scoreCounter += 2500
       }
       else if(mainBall.intersect(fallingBalls[i].x,fallingBalls[i].y) && fallingBalls[i].kind == "bad"){
         fallingBalls.splice(i,1)
@@ -155,6 +157,7 @@ function endGameScreen(finalScore){
   textStyle(BOLDITALIC)
   textSize(20)
   fill(232, 0, 0)
-  text(finalScore, width/2, height/2)
+  circ = circle(width/2, height/2, 25)
+  text(finalScore, width/2, height/2+50)
   pop()
 }
