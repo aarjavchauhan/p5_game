@@ -2,6 +2,7 @@ let leftWallStart = 0
 let rightWallStart = 0
 let start = false
 let end = false
+let restartedGame = false
 let dropBallSpeed = 2
 let dropRate = 50
 let goodBallRate = 3
@@ -25,8 +26,12 @@ function draw() {
   if (start) {
     startGame()
   }
+  else {
+    endGameScreen(round(scoreCounter/100))
+  }
 }
 
+//draw moving walls on either side of the canvas
 function drawWall(){
   push()
   rectMode(CORNERS)
@@ -42,18 +47,18 @@ function drawWall(){
   pop()
 }
 
+//check whether a ball intersects with the walls
 function wallIntersect(xCoordinate)
 {
   if(xCoordinate < leftWallStart || xCoordinate > width-rightWallStart)
   {
-    console.log('a ball is in the area')
     return true
   }
 }
 
+//main gameplay functions
 function startGame(){
   background(255)
-
 
   if(end != true){
     push()
@@ -72,7 +77,7 @@ function startGame(){
     mainBall.move()
     mainBall.display()
     if(wallIntersect(mainBall.x))
-      end = true
+    end = true
 
     for (var i = fallingBalls.length-1 ; i >0  ; i--) {
       fallingBalls[i].move()
@@ -103,6 +108,8 @@ function startGame(){
   }
 }
 
+//calculate and adjust speed of walls,
+//rate of the # of balls falling and their speed based on the score
 function scoringLogic(score){
 
   if (score > 20 && score < 40) {
@@ -132,14 +139,16 @@ function scoringLogic(score){
   }
 }
 
+//create a falling ball (thanks Joel for this function!)
 function makeDrop(){
   var rand = random(0,10)
   if(rand<goodBallRate)
-    fallingBalls.push(new FallingBall(leftWallStart, rightWallStart, dropBallSpeed, "good"))
+  fallingBalls.push(new FallingBall(leftWallStart, rightWallStart, dropBallSpeed, "good"))
   else
-    fallingBalls.push(new FallingBall(leftWallStart, rightWallStart, dropBallSpeed, "bad"))
+  fallingBalls.push(new FallingBall(leftWallStart, rightWallStart, dropBallSpeed, "bad"))
 }
 
+//start game screen
 function startGameScreen(){
   push()
   fill(232, 37, 37)
@@ -147,17 +156,41 @@ function startGameScreen(){
   mainBall.move()
   mainBall.display()
   if(mainBall.intersect(width/2,height/2))
-    start = true
+  start = true
   pop()
 }
 
+//end game screen and re-adjust all values, show score
 function endGameScreen(finalScore){
+  background(255)
   push()
-  textAlign(CENTER)
-  textStyle(BOLDITALIC)
-  textSize(20)
   fill(232, 0, 0)
+  
+  if(finalScore != 0){
+    textAlign(CENTER)
+    textStyle(BOLDITALIC)
+    textSize(20)
+    text(finalScore, width/2, height/2+50)
+  }
+
   circ = circle(width/2, height/2, 25)
-  text(finalScore, width/2, height/2+50)
+  start = false
+
+  mainBall.move()
+  mainBall.display()
+  if(mainBall.intersect(width/2,height/2)){
+    leftWallStart = 0
+    rightWallStart = 0
+    start = true
+    end = false
+    restartedGame = false
+    dropBallSpeed = 2
+    dropRate = 50
+    goodBallRate = 3
+    scoreCounter = 0
+    fallingBalls = []
+    wallRetreatSpeed = 200
+    wallIncreaseSpeed = 0.2
+  }
   pop()
 }
