@@ -7,7 +7,8 @@ let dropRate = 50
 let goodBallRate = 3
 let scoreCounter = 0
 let fallingBalls = []
-let wallRetreatSpeed = 100
+let wallRetreatSpeed = 200
+let wallIncreaseSpeed = 0.2
 
 function setup() {
   let mouseColor = color(139,0,0)
@@ -29,13 +30,13 @@ function drawWall(){
   push()
   rectMode(CORNERS)
   noStroke()
-  fill(221)
+  fill(0)
   rect(0, 0, leftWallStart, height)
-  fill(139, 0, 120)
+  fill(0)
   rect(width, 0, width-rightWallStart, height)
   if(leftWallStart<width/2 || rightWallStart<width/2){
-    leftWallStart += 0.2
-    rightWallStart += 0.2
+    leftWallStart += wallIncreaseSpeed
+    rightWallStart += wallIncreaseSpeed
   }
   pop()
 }
@@ -54,10 +55,13 @@ function startGame(){
 
 
   if(end != true){
-
+    push()
     scoreCounter += fallingBalls.length
-    textAlign(CENTER);
-    text(round(scoreCounter/100), width/2, 0.9*height);
+    textAlign(CENTER)
+    textStyle(BOLDITALIC)
+    textSize(16)
+    text(round(scoreCounter/100), width/2, 0.9*height)
+    scoringLogic(round(scoreCounter/100))
 
     if(frameCount%dropRate == 0 && leftWallStart != width/2)
     {
@@ -90,6 +94,7 @@ function startGame(){
         end = true
       }
     }
+    pop()
   }
   else {
     endGameScreen(round(scoreCounter/100))
@@ -97,8 +102,31 @@ function startGame(){
 }
 
 function scoringLogic(score){
-  if (true) {
 
+  if (score > 20 && score < 40) {
+    dropRate = 30
+    wallIncreaseSpeed = 0.3
+    dropBallSpeed = 3
+  }
+  else if (score > 40 && score < 60) {
+    dropRate = 20
+    wallIncreaseSpeed = 0.5
+    dropBallSpeed = 4
+  }
+  else if (score > 60 && score < 80){
+    dropRate = 15
+    wallIncreaseSpeed = 0.7
+    dropBallSpeed = 5
+  }
+  else if (score > 80 && score < 100){
+    dropRate = 15
+    wallIncreaseSpeed = 0.8
+    dropBallSpeed = 5
+  }
+  else if (score > 100){
+    dropRate = 10
+    wallIncreaseSpeed = 1.2
+    dropBallSpeed = 5
   }
 }
 
@@ -112,7 +140,7 @@ function makeDrop(){
 
 function startGameScreen(){
   push()
-  fill(0, 102, 153)
+  fill(232, 37, 37)
   circ = circle(width/2, height/2, 25)
   mainBall.move()
   mainBall.display()
@@ -123,7 +151,10 @@ function startGameScreen(){
 
 function endGameScreen(finalScore){
   push()
-  fill(0, 102, 153)
-  text('Game Over! Final Score: '+ finalScore, width/2, height/2)
+  textAlign(CENTER)
+  textStyle(BOLDITALIC)
+  textSize(20)
+  fill(232, 0, 0)
+  text(finalScore, width/2, height/2)
   pop()
 }
